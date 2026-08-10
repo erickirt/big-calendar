@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Calendar, Clock, User } from "lucide-react";
 import { parseISO, areIntervalsOverlapping, format } from "date-fns";
 
@@ -24,6 +25,12 @@ interface IProps {
 
 export function CalendarDayView({ singleDayEvents, multiDayEvents }: IProps) {
   const { selectedDate, setSelectedDate, users, visibleHours, workingHours } = useCalendar();
+  const [, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 60 * 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const { hours, earliestEventHour, latestEventHour } = getVisibleHours(visibleHours, singleDayEvents);
 
